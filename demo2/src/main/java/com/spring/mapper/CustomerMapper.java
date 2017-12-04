@@ -12,4 +12,5 @@ public interface CustomerMapper {
 	public Customer findByUsername(String username);
 	public void updatePassword(@Param("password") String password,  @Param("email") String email);
 	public void addCustomer(Customer customer);
+	public Customer findByEmail(String email);
 }

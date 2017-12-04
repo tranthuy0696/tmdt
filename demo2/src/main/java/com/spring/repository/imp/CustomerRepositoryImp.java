@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.spring.domain.Customer;
+import com.spring.exception.TmdtException;
 import com.spring.mapper.CustomerMapper;
 import com.spring.repository.CustomerRepository;
 @Repository
@@ -71,7 +72,11 @@ public class CustomerRepositoryImp implements CustomerRepository{
 		
 	}
 	@Override
-	public void addCustomer(Customer customer) {
+	public void addCustomer(Customer customer) throws TmdtException {
+		if(findByEmail(customer.getEmail())!=null)
+			throw new TmdtException("Email đã tồn tại");
+		if(findByUsername(customer.getUsername())!=null)
+			throw new TmdtException("Tên đăng nhập đã tồn tại");
 		SqlSession session=sqlSessionFactory.openSession();
 		try {
 			CustomerMapper customerMapper=session.getMapper(CustomerMapper.class);
@@ -84,6 +89,23 @@ public class CustomerRepositoryImp implements CustomerRepository{
 		finally {
 			session.close();
 		}
+	}
+	@Override
+	public Customer findByEmail(String email) {
+		SqlSession session=sqlSessionFactory.openSession();
+		Customer customer=null;
+		try {
+			CustomerMapper customerMapper=session.getMapper(CustomerMapper.class);
+			customer=customerMapper.findByEmail(email);
+		}
+		catch(Exception e) {
+			LOGGER.error(e.getMessage());
+			
+		}
+		finally {
+			session.close();
+		}
+		return customer;
 	}
 	
 }

@@ -8,6 +8,9 @@
 <result column="password" javaType="java.lang.String" property="password"/>
 <result column="create_date" typeHandler="com.spring.config.LocalDateTimeTypeHandler" property="createDate"/>
 <result column="modified_date" typeHandler="com.spring.config.LocalDateTimeTypeHandler" property="modifiedDate"/>
+<result column="address" javaType="java.lang.String" property="address"/>
+<result column="phone_number" javaType="java.lang.String" property="phoneNumber"/>
+
 <association column="permission_id" property="authority" select="com.spring.mapper.RoleMapper.getRoleById"> </association>
 </resultMap>
 <select id="getAllCustomer" resultMap="customer" resultType="java.util.List">
@@ -17,10 +20,14 @@ select * from CUSTOMER
 <select id="findByUsername" resultMap="customer" parameterType="java.lang.String" resultType="com.spring.domain.Customer">
 select * from CUSTOMER where name=#{username}
 </select>
+<select id="findByEmail" resultMap="customer" parameterType="java.lang.String" resultType="com.spring.domain.Customer">
+select * from CUSTOMER where email=#{email}
+</select>
+
 <update id="updatePassword" parameterType="java.lang.String" >
 update CUSTOMER set password=#{password} where email=#{email}
 </update>
 <insert id="addCustomer" parameterType="com.spring.domain.Customer">
-insert into CUSTOMER (name, email,password,create_date, modified_date, permission_id) values(#{username}, #{email}, #{password},now(),now(),2)
+insert into CUSTOMER (name, email,password,create_date, modified_date, permission_id,address,phone_number) values(#{username}, #{email}, #{password},now(),now(),2, #{address}, #{phoneNumber})
 </insert>
 </mapper>

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.domain.Customer;
+import com.spring.exception.TmdtException;
 import com.spring.repository.CustomerRepository;
 
 @RestController
@@ -16,7 +17,7 @@ public class CustomerController {
 	private CustomerRepository customerRepository;
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public void addCustomer(@RequestBody Customer customer) {
+	public void addCustomer(@RequestBody Customer customer) throws TmdtException {
 		customerRepository.addCustomer(customer);
 
 	}
